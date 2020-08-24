@@ -19,10 +19,18 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   message_filters
   rosbag_storage
+  cv_bridge
+  camera_model
+  roslib
 )
+
+find_package(OpenCV REQUIRED)
+find_package(Ceres REQUIRED)
+find_package(Eigen3)
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIR}
 )
 
 catkin_package()
@@ -37,6 +45,24 @@ add_executable(credibilist_slam src/slams/credibilist/slam.cpp)
 add_executable(path_publisher src/ros/path_publisher.cpp)
 add_executable(p2D_ss_evaluator src/utils/pose2D_search_space_evaluator.cpp)
 add_executable(sm_runner src/utils/sm_runner.cpp)
+add_executable(vio_vins 
+	src/ros/vio_vins_node.cpp 
+	src/core/features/feature_tracker.cpp 
+	src/ros/estimator.cpp 
+	src/ros/initial/solve_5pts.cpp
+	src/ros/feature_manager.cpp
+	src/ros/factor/pose_local_parameterization.cpp
+	src/ros/factor/projection_factor.cpp
+	src/ros/factor/projection_td_factor.cpp
+	src/ros/factor/marginalization_factor.cpp
+	src/ros/utility/utility.cpp
+	src/ros/utility/visualization.cpp
+	src/ros/utility/CameraPoseVisualization.cpp
+	src/ros/initial/initial_aligment.cpp
+	src/ros/initial/initial_sfm.cpp
+	src/ros/initial/initial_ex_rotation.cpp
+#		src/utils/init_vio.cpp
+)
 
 target_link_libraries(wg_pr2_bag_adapter ${catkin_LIBRARIES})
 target_link_libraries(lslam2D_bag_runner ${catkin_LIBRARIES})
@@ -46,6 +72,8 @@ target_link_libraries(credibilist_slam ${catkin_LIBRARIES})
 #target_link_libraries(graph_slam ${catkin_LIBRARIES})
 #target_link_libraries(viny_slam_x ${catkin_LIBRARIES})
 target_link_libraries(path_publisher ${catkin_LIBRARIES})
+target_link_libraries(vio_vins ${catkin_LIBRARIES})
+
 
 install(
   TARGETS wg_pr2_bag_adapter lslam2D_bag_runner sh_slam gmapping credibilist_slam path_publisher

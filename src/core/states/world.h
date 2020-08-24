@@ -11,6 +11,7 @@ public:
   virtual void handle_sensor_data(SensorData &) = 0;
   // No virtual dtor, since a descendant is not suppoused to be
   // destroyed via a pointer to the class
+
 };
 
 class WorldPoseObserver {
