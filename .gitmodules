@@ -1,0 +1,3 @@
+[submodule "VINS-Mono"]
+	path = VINS-Mono
+	url = https://github.com/armankuzembayev/VINS-Mono.git

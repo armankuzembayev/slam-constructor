@@ -15,6 +15,7 @@ class TopicObserver { // iface
 public: // methods
   virtual void handle_transformed_msg(const boost::shared_ptr<MType>,
                                       const tf::StampedTransform&) = 0;
+  virtual void handle_msg() {};
 };
 
 // TODO: add scan drop

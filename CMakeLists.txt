@@ -10,6 +10,9 @@ else()
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
+add_subdirectory(VINS-Mono/camera_model)
+add_subdirectory(VINS-Mono/vins_estimator)
+
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
@@ -19,11 +22,23 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   message_filters
   rosbag_storage
+  cv_bridge
+  camera_model
+  roslib
+  vins_estimator
 )
+
+find_package(Boost REQUIRED)
+find_package(OpenCV REQUIRED)
+find_package(Ceres REQUIRED)
 
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIR}
+  ${CERES_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
 )
+
 
 catkin_package()
 
@@ -37,6 +52,7 @@ add_executable(credibilist_slam src/slams/credibilist/slam.cpp)
 add_executable(path_publisher src/ros/path_publisher.cpp)
 add_executable(p2D_ss_evaluator src/utils/pose2D_search_space_evaluator.cpp)
 add_executable(sm_runner src/utils/sm_runner.cpp)
+add_executable(vio_vins src/ros/vio_vins_node.cpp)
 
 target_link_libraries(wg_pr2_bag_adapter ${catkin_LIBRARIES})
 target_link_libraries(lslam2D_bag_runner ${catkin_LIBRARIES})
@@ -46,6 +62,7 @@ target_link_libraries(credibilist_slam ${catkin_LIBRARIES})
 #target_link_libraries(graph_slam ${catkin_LIBRARIES})
 #target_link_libraries(viny_slam_x ${catkin_LIBRARIES})
 target_link_libraries(path_publisher ${catkin_LIBRARIES})
+target_link_libraries(vio_vins ${catkin_LIBRARIES})
 
 install(
   TARGETS wg_pr2_bag_adapter lslam2D_bag_runner sh_slam gmapping credibilist_slam path_publisher

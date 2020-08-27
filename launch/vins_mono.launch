@@ -1,0 +1,8 @@
+<launch>
+    <arg name="config_path" default = "$(find slam_constructor)/config/vio/vins_properties.yaml" />
+    
+    <node name="vio_vins" pkg="slam_constructor" type="vio_vins" output="screen">
+       <param name="config_file" type="string" value="$(arg config_path)" />
+    </node>
+
+</launch>
