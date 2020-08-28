@@ -41,8 +41,7 @@ if(USE_VINS_MONO)
 	${Boost_INCLUDE_DIRS}
     )
 
-    add_executable(vio_vins src/ros/vio_vins_node.cpp)
-    target_link_libraries(vio_vins ${catkin_LIBRARIES})
+    set(VIO 1)
     
 else()
     find_package(catkin REQUIRED COMPONENTS
@@ -59,6 +58,8 @@ else()
     include_directories(
 	${catkin_INCLUDE_DIRS}
     )
+    set(VIO 0)
+
 endif(USE_VINS_MONO)
 unset(USE_VINS_MONO CACHE) # <---- this is the important!!
 
@@ -76,6 +77,11 @@ add_executable(credibilist_slam src/slams/credibilist/slam.cpp)
 add_executable(path_publisher src/ros/path_publisher.cpp)
 add_executable(p2D_ss_evaluator src/utils/pose2D_search_space_evaluator.cpp)
 add_executable(sm_runner src/utils/sm_runner.cpp)
+
+if(VIO)
+    add_executable(vio_vins src/ros/vio_vins_node.cpp)
+    target_link_libraries(vio_vins ${catkin_LIBRARIES})
+endif()
 
 target_link_libraries(wg_pr2_bag_adapter ${catkin_LIBRARIES})
 target_link_libraries(lslam2D_bag_runner ${catkin_LIBRARIES})
