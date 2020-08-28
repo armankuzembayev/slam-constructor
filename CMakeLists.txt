@@ -10,7 +10,7 @@ else()
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
-option(USE_VINS_MONO "Use VINS_MONO" ON) #OFF by default
+option(USE_VINS_MONO "Use VINS_MONO" OFF) #OFF by default
 if(USE_VINS_MONO)
     add_subdirectory(VINS-Mono/camera_model)
     add_subdirectory(VINS-Mono/vins_estimator)
